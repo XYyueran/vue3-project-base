@@ -4,10 +4,12 @@ const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack')
 const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const isDev = process.env.NODE_ENV === 'development' // 是否是开发模式
 module.exports = {
   entry: path.join(__dirname, '../src/index.ts'), // 入口文件
   output: {
-    filename: 'static/js/[name].js', // 每个输出js的名称
+    filename: 'static/js/[name].[chunkhash:8].js',
     path: path.join(__dirname, '../dist'), // 打包结果输出路径
     clean: true, // webpack4需要配置clean-webpack-plugin来删除dist文件,webpack5内置了
     publicPath: '/' // 打包后文件的公共前缀路径
@@ -41,7 +43,7 @@ module.exports = {
         test: /\.css$/, //匹配所有的 css 文件
         include: [path.resolve(__dirname, '../src')],
         use: [
-          'style-loader',
+            isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader'
         ]
@@ -50,7 +52,7 @@ module.exports = {
         test: /\.less$/, //匹配所有的 less 文件
         include: [path.resolve(__dirname, '../src')],
         use: [
-          'style-loader',
+            isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           'postcss-loader',
           'less-loader'
@@ -65,7 +67,7 @@ module.exports = {
           }
         },
         generator:{ 
-          filename:'static/images/[name][ext]', // 文件输出目录和命名
+            filename:'static/images/[name].[contenthash:8][ext]' // 文件输出目录和命名
         },
       },
       {
