@@ -21,19 +21,9 @@ module.exports = {
       	use: 'vue-loader', // 用vue-loader去解析vue文件
       },
       {
-        test: /\.ts$/, // 匹配.ts文件
+        test: /\.(js|ts)$/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                "@babel/preset-typescript",
-                {
-                  allExtensions: true, //支持所有文件扩展名(重要)
-                },
-              ],
-            ]
-          }
         }
       },
       {
