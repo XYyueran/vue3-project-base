@@ -14,36 +14,45 @@ module.exports = {
   },
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
+    alias: {
+        '@': path.join(__dirname, '../src')
+      },
+    modules: [path.resolve(__dirname, '../node_modules')], 
   },
+  
   cache: {
     type: 'filesystem', // 使用文件缓存
   },
   module: {
     rules: [
       {
+        include: [path.resolve(__dirname, '../src')], 
       	test: /\.vue$/, // 匹配.vue文件
       	use: 'vue-loader', // 用vue-loader去解析vue文件
       },
       {
+        include: [path.resolve(__dirname, '../src')],
         test: /\.(ts)$/,
         use: {
           loader: 'babel-loader',
         }
       },
       {
-        test: /.(css|less)$/, //匹配 css和less 文件
+        test: /\.css$/, //匹配所有的 css 文件
+        include: [path.resolve(__dirname, '../src')],
         use: [
           'style-loader',
           'css-loader',
-          // 新增
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: ['autoprefixer']
-              }
-            }
-          },
+          'postcss-loader'
+        ]
+      },
+      {
+        test: /\.less$/, //匹配所有的 less 文件
+        include: [path.resolve(__dirname, '../src')],
+        use: [
+          'style-loader',
+          'css-loader',
+          'postcss-loader',
           'less-loader'
         ]
       },
