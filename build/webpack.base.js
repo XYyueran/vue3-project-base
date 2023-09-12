@@ -3,6 +3,7 @@ const path = require('path')
 const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack')
+const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   entry: path.join(__dirname, '../src/index.ts'), // 入口文件
   output: {
@@ -21,7 +22,7 @@ module.exports = {
       	use: 'vue-loader', // 用vue-loader去解析vue文件
       },
       {
-        test: /\.(js|ts)$/,
+        test: /\.(ts)$/,
         use: {
           loader: 'babel-loader',
         }
@@ -54,6 +55,17 @@ module.exports = {
       new webpack.DefinePlugin({
         'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      }),
+      new CopyPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, '../public'), // 复制public下文件
+            to: path.resolve(__dirname, '../dist'), // 复制到dist目录中
+            filter: source => {
+              return !source.includes('index.html') // 忽略index.html
+            }
+          },
+        ],
       })
   ]
 }
