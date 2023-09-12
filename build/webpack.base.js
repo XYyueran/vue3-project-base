@@ -15,6 +15,9 @@ module.exports = {
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
   },
+  cache: {
+    type: 'filesystem', // 使用文件缓存
+  },
   module: {
     rules: [
       {
